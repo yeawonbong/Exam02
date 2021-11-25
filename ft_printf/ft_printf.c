@@ -1,8 +1,8 @@
 # include "ft_printf.h"
 
-char	type = 0;
 int		width = 0;
 int 	precision = -1;
+char	type = 0;
 
 char	*ptr;
 char	*out;
@@ -29,10 +29,10 @@ char *parse_opt(char *ptr)
 		return (0);
 	else
 		type = *ptr;
-	return (ptr);
+	return (++ptr);
 }
 
-char*	print(va_list *ap)
+void	print(va_list *ap)
 {
 	char *out;
 	int	len=0;
@@ -69,7 +69,6 @@ char*	print(va_list *ap)
 	width =0;
 	precision =-1;
 	out = 0;
-	return (++ptr);
 }
 
 int ft_printf(const char *input, ...)
@@ -80,15 +79,12 @@ int ft_printf(const char *input, ...)
 	while (*ptr)
 	{
 		while (*ptr && *ptr != '%')
-		{
-			write(1, ptr, 1);
-			ptr++;
-		}
+			write(1, ptr++, 1);
 		if (*ptr && *ptr == '%')
 		{
 			ptr++;
 			ptr = parse_opt(ptr);
-			ptr = print(&ap);
+			print(&ap);
 		}
 	}
 	return (0);
